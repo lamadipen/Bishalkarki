@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';
 import '../main.dart';
 
 class FooterSection extends StatelessWidget {
   const FooterSection({super.key});
-
-  Future<void> _open(String value) async {
-    final uri = Uri.parse(value);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,27 +41,6 @@ class FooterSection extends StatelessWidget {
                   _FooterLink('Listings', () => sc.scrollToSection('listings')),
                   _FooterLink('Services', () => sc.scrollToSection('services')),
                   _FooterLink('Contact', () => sc.scrollToSection('contact')),
-                ],
-              ),
-              Wrap(
-                spacing: AppSpacing.sm,
-                children: [
-                  IconButton(
-                    onPressed: () => _open(AppContent.facebook),
-                    icon: const FaIcon(FontAwesomeIcons.facebookF),
-                  ),
-                  IconButton(
-                    onPressed: () => _open(AppContent.instagram),
-                    icon: const FaIcon(FontAwesomeIcons.instagram),
-                  ),
-                  IconButton(
-                    onPressed: () => _open(AppContent.linkedIn),
-                    icon: const FaIcon(FontAwesomeIcons.linkedinIn),
-                  ),
-                  IconButton(
-                    onPressed: () => _open(AppContent.whatsapp),
-                    icon: const FaIcon(FontAwesomeIcons.whatsapp),
-                  ),
                 ],
               ),
               Text(

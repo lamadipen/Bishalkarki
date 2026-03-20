@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';
 import '../main.dart';
@@ -34,6 +36,16 @@ class AboutSection extends StatelessWidget {
             _CounterCard(label: 'Areas Covered', value: 18),
           ],
         ),
+        const SizedBox(height: AppSpacing.xl),
+        Text(
+          'FOLLOW ALONG',
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                letterSpacing: 2.4,
+                color: AppColors.primary,
+              ),
+        ),
+        const SizedBox(height: AppSpacing.md),
+        const _AboutSocialRow(),
       ],
     );
   }
@@ -85,6 +97,74 @@ class AboutSection extends StatelessWidget {
 }
 
 /// Left column: light editorial panel — portrait + “MEET [NAME]” (reference layout).
+/// Circular-outline social icons (Ikon-style) for the About section.
+class _AboutSocialRow extends StatelessWidget {
+  const _AboutSocialRow();
+
+  Future<void> _open(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final items = <({IconData icon, String url, String tooltip})>[
+      (icon: FontAwesomeIcons.facebookF, url: AppContent.facebook, tooltip: 'Facebook'),
+      (icon: FontAwesomeIcons.instagram, url: AppContent.instagram, tooltip: 'Instagram'),
+      (icon: FontAwesomeIcons.linkedinIn, url: AppContent.linkedIn, tooltip: 'LinkedIn'),
+      (icon: FontAwesomeIcons.whatsapp, url: AppContent.whatsapp, tooltip: 'WhatsApp'),
+    ];
+
+    return Wrap(
+      spacing: AppSpacing.sm,
+      runSpacing: AppSpacing.sm,
+      children: [
+        for (final item in items)
+          Tooltip(
+            message: item.tooltip,
+            child: _SocialCircleButton(
+              icon: item.icon,
+              onTap: () => _open(item.url),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _SocialCircleButton extends StatelessWidget {
+  const _SocialCircleButton({
+    required this.icon,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        customBorder: const CircleBorder(),
+        child: Container(
+          width: 46,
+          height: 46,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.primary.withValues(alpha: 0.85), width: 1.4),
+          ),
+          alignment: Alignment.center,
+          child: FaIcon(icon, size: 18, color: AppColors.primary),
+        ),
+      ),
+    );
+  }
+}
+
 class _AboutLeftPanel extends StatelessWidget {
   const _AboutLeftPanel({required this.isMobile});
 
