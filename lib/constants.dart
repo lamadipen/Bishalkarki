@@ -24,6 +24,15 @@ class AppSpacing {
 
 class AppContent {
   static const String realtorName = 'Bishal Karki';
+  /// Portrait for About section (replace with a vertical headshot for best results).
+  static const String aboutAgentPortraitAsset = 'assets/images/about_agent.png';
+
+  /// “MEET BISHAL” style line — uses first name only, uppercase.
+  static String get aboutMeetHeadline {
+    final parts = realtorName.trim().split(RegExp(r'\s+'));
+    final first = parts.isEmpty ? realtorName : parts.first;
+    return 'MEET ${first.toUpperCase()}';
+  }
   static const String role = 'Realtor';
   static const String company = 'IKON Realty';
   static const String tagline = 'Top 1% Realtor in USA';

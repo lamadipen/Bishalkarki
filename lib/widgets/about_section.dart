@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
@@ -8,6 +9,34 @@ import '../main.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
+
+  Widget _aboutRightColumn(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '${AppContent.realtorName} is a client-first ${AppContent.role.toLowerCase()} at ${AppContent.company}.',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Text(
+          'With a reputation for strategic pricing, strong negotiation, and high-touch service, Bishal guides buyers, sellers, and investors through every step with confidence. His local market knowledge across Fairfax and nearby communities helps clients move quickly and smartly in competitive conditions.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: AppSpacing.xl),
+        const Wrap(
+          spacing: AppSpacing.md,
+          runSpacing: AppSpacing.md,
+          children: [
+            _CounterCard(label: 'Years Experience', value: 11),
+            _CounterCard(label: 'Properties Sold', value: 285),
+            _CounterCard(label: 'Happy Clients', value: 340),
+            _CounterCard(label: 'Areas Covered', value: 18),
+          ],
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,53 +57,77 @@ class AboutSection extends StatelessWidget {
             children: [
               Text('About', style: Theme.of(context).textTheme.displayMedium),
               const SizedBox(height: AppSpacing.xl),
-              Flex(
-                direction: isMobile ? Axis.vertical : Axis.horizontal,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        'https://picsum.photos/640/780?person',
-                        fit: BoxFit.cover,
-                        height: isMobile ? 340 : 460,
-                      ),
+              if (isMobile) ...[
+                const _AboutLeftPanel(isMobile: true),
+                const SizedBox(height: AppSpacing.xl),
+                _aboutRightColumn(context),
+              ] else
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Expanded(
+                      flex: 2,
+                      child: _AboutLeftPanel(isMobile: false),
                     ),
-                  ),
-                  SizedBox(width: isMobile ? 0 : AppSpacing.xl, height: isMobile ? 20 : 0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${AppContent.realtorName} is a client-first ${AppContent.role.toLowerCase()} at ${AppContent.company}.',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        Text(
-                          'With a reputation for strategic pricing, strong negotiation, and high-touch service, Bishal guides buyers, sellers, and investors through every step with confidence. His local market knowledge across Fairfax and nearby communities helps clients move quickly and smartly in competitive conditions.',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        const SizedBox(height: AppSpacing.xl),
-                        const Wrap(
-                          spacing: AppSpacing.md,
-                          runSpacing: AppSpacing.md,
-                          children: [
-                            _CounterCard(label: 'Years Experience', value: 11),
-                            _CounterCard(label: 'Properties Sold', value: 285),
-                            _CounterCard(label: 'Happy Clients', value: 340),
-                            _CounterCard(label: 'Areas Covered', value: 18),
-                          ],
-                        ),
-                      ],
+                    const SizedBox(width: AppSpacing.xl),
+                    Expanded(
+                      flex: 3,
+                      child: _aboutRightColumn(context),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Left column: light editorial panel — portrait + “MEET [NAME]” (reference layout).
+class _AboutLeftPanel extends StatelessWidget {
+  const _AboutLeftPanel({required this.isMobile});
+
+  final bool isMobile;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      color: Colors.white,
+      padding: EdgeInsets.all(isMobile ? AppSpacing.lg : AppSpacing.xl),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AspectRatio(
+            aspectRatio: 3 / 4,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(2),
+              child: Image.asset(
+                AppContent.aboutAgentPortraitAsset,
+                fit: BoxFit.cover,
+                alignment: Alignment.centerLeft,
+                filterQuality: FilterQuality.high,
+                errorBuilder: (_, __, ___) => Image.network(
+                  'https://picsum.photos/640/853?portrait',
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: isMobile ? AppSpacing.lg : AppSpacing.xl),
+          Text(
+            AppContent.aboutMeetHeadline,
+            style: GoogleFonts.montserrat(
+              fontSize: isMobile ? 28 : 40,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 3.2,
+              height: 1.05,
+              color: const Color(0xFF1A1A1A),
+            ),
+          ),
+        ],
       ),
     );
   }
