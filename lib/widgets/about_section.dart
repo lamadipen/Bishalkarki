@@ -30,12 +30,21 @@ class AboutSection extends StatelessWidget {
           spacing: AppSpacing.md,
           runSpacing: AppSpacing.md,
           children: [
-            _CounterCard(label: 'Years Experience', value: 11),
-            _CounterCard(label: 'Properties Sold', value: 285),
-            _CounterCard(label: 'Happy Clients', value: 340),
-            _CounterCard(label: 'Areas Covered', value: 18),
+            _StatCard(label: 'Closed Sales', value: '\$153.9M'),
+            _StatCard(label: 'Price Range', value: '\$375K - \$2.2M'),
+            _StatCard(label: 'Average Price', value: '\$601.1K'),
           ],
         ),
+        const SizedBox(height: AppSpacing.xl),
+        Text(
+          'Recognition',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: AppColors.primary,
+                fontWeight: FontWeight.w700,
+              ),
+        ),
+        const SizedBox(height: AppSpacing.md),
+        const _RecognitionList(),
         const SizedBox(height: AppSpacing.xl),
         Text(
           'FOLLOW ALONG',
@@ -271,6 +280,89 @@ class _CounterCardState extends State<_CounterCard> {
           Text(widget.label),
         ],
       ),
+    );
+  }
+}
+
+class _StatCard extends StatelessWidget {
+  const _StatCard({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 170,
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            value,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RecognitionList extends StatelessWidget {
+  const _RecognitionList();
+
+  @override
+  Widget build(BuildContext context) {
+    const items = [
+      'Top 5% Top Agent Award Winner by Homesnap',
+      'Top 1% Producing Agent in USA',
+      'NVAR Top Producer Platinum Club (2021, 2022, 2023, 2024)',
+      '#1 Agent Ikon Realty (2021, 2022, 2023, 2024)',
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (final text in items)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 2),
+                  child: FaIcon(
+                    FontAwesomeIcons.certificate,
+                    size: 14,
+                    color: AppColors.primary,
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Text(
+                    text,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }

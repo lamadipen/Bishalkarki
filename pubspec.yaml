@@ -17,6 +17,7 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   url_launcher: ^6.3.1
   carousel_slider: ^5.0.0
+  web: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -26,4 +27,4 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/about_agent.png
+    - assets/images/about_agent.jpg

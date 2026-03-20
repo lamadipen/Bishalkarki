@@ -25,7 +25,7 @@ class AppSpacing {
 class AppContent {
   static const String realtorName = 'Bishal Karki';
   /// Portrait for About section (replace with a vertical headshot for best results).
-  static const String aboutAgentPortraitAsset = 'assets/images/about_agent.png';
+  static const String aboutAgentPortraitAsset = 'assets/images/about_agent.jpg';
 
   /// “MEET BISHAL” style line — uses first name only, uppercase.
   static String get aboutMeetHeadline {
