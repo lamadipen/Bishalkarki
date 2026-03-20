@@ -9,17 +9,17 @@ class ListingsSection extends StatelessWidget {
   const ListingsSection({super.key});
 
   static const _listings = [
-    _Listing('\$1,285,000', '4213 Maple Crest Dr, Fairfax, VA', '4', '3', '3,250',
+    _Listing('\$1,285,000', '4213 Maple Crest Dr, Fairfax, VA', '4', '3', '3,250', 'For Sale',
         'https://picsum.photos/600/420?house1'),
-    _Listing('\$949,000', '9820 Green River Ln, Vienna, VA', '3', '2.5', '2,640',
+    _Listing('\$949,000', '9820 Green River Ln, Vienna, VA', '3', '2.5', '2,640', 'Coming Soon',
         'https://picsum.photos/600/420?house2'),
-    _Listing('\$1,650,000', '7202 Oak Hollow Ct, McLean, VA', '5', '4.5', '4,100',
+    _Listing('\$1,650,000', '7202 Oak Hollow Ct, McLean, VA', '5', '4.5', '4,100', 'For Sale',
         'https://picsum.photos/600/420?house3'),
-    _Listing('\$789,000', '5508 Liberty Bell Dr, Arlington, VA', '3', '2', '2,120',
+    _Listing('\$789,000', '5508 Liberty Bell Dr, Arlington, VA', '3', '2', '2,120', 'Pending',
         'https://picsum.photos/600/420?house4'),
-    _Listing('\$1,120,000', '1933 Stonebrook Way, Reston, VA', '4', '3.5', '3,040',
+    _Listing('\$1,120,000', '1933 Stonebrook Way, Reston, VA', '4', '3.5', '3,040', 'For Lease',
         'https://picsum.photos/600/420?house5'),
-    _Listing('\$674,000', '14507 Pinecrest Ave, Falls Church, VA', '2', '2', '1,760',
+    _Listing('\$674,000', '14507 Pinecrest Ave, Falls Church, VA', '2', '2', '1,760', 'For Sale',
         'https://picsum.photos/600/420?house6'),
   ];
 
@@ -138,6 +138,22 @@ class _ListingCardState extends State<_ListingCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withValues(alpha: 0.18),
+                        borderRadius: BorderRadius.circular(999),
+                        border: Border.all(color: AppColors.primary.withValues(alpha: 0.35)),
+                      ),
+                      child: Text(
+                        widget.data.status,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
                     Text(
                       widget.data.price,
                       style: Theme.of(context)
@@ -181,6 +197,7 @@ class _Listing {
     this.beds,
     this.baths,
     this.sqft,
+    this.status,
     this.image,
   );
 
@@ -189,5 +206,6 @@ class _Listing {
   final String beds;
   final String baths;
   final String sqft;
+  final String status;
   final String image;
 }

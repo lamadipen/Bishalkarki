@@ -52,6 +52,34 @@ class _ContactSectionState extends State<ContactSection> {
             children: [
               Text('Contact', style: Theme.of(context).textTheme.displayMedium),
               const SizedBox(height: AppSpacing.xl),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  child: Wrap(
+                    runSpacing: AppSpacing.sm,
+                    spacing: AppSpacing.lg,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Text(
+                        'Get your instant home valuation',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      Text(
+                        'See what your home may be worth in today\'s DMV market.',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      OutlinedButton(
+                        onPressed: () => _launchLink(AppContent.website),
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: AppColors.primary),
+                        ),
+                        child: const Text('Unlock Free Valuation'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.lg),
               Flex(
                 direction: isMobile ? Axis.vertical : Axis.horizontal,
                 crossAxisAlignment: CrossAxisAlignment.start,

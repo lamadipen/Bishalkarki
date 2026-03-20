@@ -50,7 +50,7 @@ class HeroSection extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.md),
                   Text(
-                    'Luxury Service.\nLocal Expertise.\nTrusted Results.',
+                    'Guiding Buyers, Sellers,\nand Investors to\nConfident Decisions.',
                     style: Theme.of(context).textTheme.displayLarge?.copyWith(
                           fontSize: MediaQuery.of(context).size.width < 600 ? 40 : 62,
                         ),
@@ -67,7 +67,7 @@ class HeroSection extends StatelessWidget {
                           duration: const Duration(milliseconds: 1800),
                         ),
                         FadeAnimatedText(
-                          'Serving Fairfax and Northern Virginia',
+                          'From consultation to closing, every step covered',
                           textStyle: Theme.of(context).textTheme.titleLarge,
                           duration: const Duration(milliseconds: 1800),
                         ),
@@ -89,7 +89,7 @@ class HeroSection extends StatelessWidget {
                             vertical: AppSpacing.md,
                           ),
                         ),
-                        child: const Text('View Listings'),
+                        child: const Text('Home Search'),
                       ),
                       OutlinedButton(
                         onPressed: () => keys.scrollToSection('contact'),

@@ -76,7 +76,11 @@ class FooterSection extends StatelessWidget {
               Text(
                 '© ${DateTime.now().year} ${AppContent.company}. All Rights Reserved.',
                 style: Theme.of(context).textTheme.bodyMedium,
-              )
+              ),
+              Text(
+                'All information is deemed reliable but not guaranteed and should be independently reviewed and verified.',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ],
           ),
         ),

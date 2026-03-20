@@ -38,6 +38,12 @@ class ServicesSection extends StatelessWidget {
           child: Column(
             children: [
               Text('Services', style: Theme.of(context).textTheme.displayMedium),
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                'From consultation to closing, we are with you every step.',
+                style: Theme.of(context).textTheme.bodyLarge,
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: AppSpacing.xl),
               GridView.builder(
                 shrinkWrap: true,
