@@ -47,4 +47,8 @@ class AppContent {
   static const String instagram = 'https://www.instagram.com';
   static const String whatsapp = 'https://wa.me/17038692665';
   static const String workingHours = 'Mon - Sat: 9:00 AM - 7:00 PM';
+
+  /// Homes.com agent page — use for “View all” and as a fallback until each card has its own listing URL.
+  static const String homesAgentListingsUrl =
+      'https://www.homes.com/real-estate-agents/bishal-karki/clq2nsf/';
 }
