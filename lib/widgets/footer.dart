@@ -1,0 +1,97 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../constants.dart';
+import '../main.dart';
+
+class FooterSection extends StatelessWidget {
+  const FooterSection({super.key});
+
+  Future<void> _open(String value) async {
+    final uri = Uri.parse(value);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final sc = context.read<ScrollSectionController>();
+
+    return Container(
+      width: double.infinity,
+      color: Colors.black,
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xl),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
+          child: Wrap(
+            runSpacing: AppSpacing.lg,
+            alignment: WrapAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${AppContent.realtorName} • ${AppContent.company}',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  const Text(AppContent.tagline),
+                ],
+              ),
+              Wrap(
+                spacing: AppSpacing.md,
+                children: [
+                  _FooterLink('Home', () => sc.scrollToSection('home')),
+                  _FooterLink('About', () => sc.scrollToSection('about')),
+                  _FooterLink('Listings', () => sc.scrollToSection('listings')),
+                  _FooterLink('Services', () => sc.scrollToSection('services')),
+                  _FooterLink('Contact', () => sc.scrollToSection('contact')),
+                ],
+              ),
+              Wrap(
+                spacing: AppSpacing.sm,
+                children: [
+                  IconButton(
+                    onPressed: () => _open(AppContent.facebook),
+                    icon: const FaIcon(FontAwesomeIcons.facebookF),
+                  ),
+                  IconButton(
+                    onPressed: () => _open(AppContent.instagram),
+                    icon: const FaIcon(FontAwesomeIcons.instagram),
+                  ),
+                  IconButton(
+                    onPressed: () => _open(AppContent.linkedIn),
+                    icon: const FaIcon(FontAwesomeIcons.linkedinIn),
+                  ),
+                  IconButton(
+                    onPressed: () => _open(AppContent.whatsapp),
+                    icon: const FaIcon(FontAwesomeIcons.whatsapp),
+                  ),
+                ],
+              ),
+              Text(
+                '© ${DateTime.now().year} ${AppContent.company}. All Rights Reserved.',
+                style: Theme.of(context).textTheme.bodyMedium,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FooterLink extends StatelessWidget {
+  const _FooterLink(this.title, this.onTap);
+  final String title;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(onPressed: onTap, child: Text(title));
+  }
+}
