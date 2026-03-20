@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';
 import '../main.dart';
+import 'map_embed.dart';
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -175,19 +176,12 @@ class _ContactSectionState extends State<ContactSection> {
                             const SizedBox(height: AppSpacing.lg),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(12),
-                              child: Container(
-                                height: 200,
+                              child: const SizedBox(
+                                height: 260,
                                 width: double.infinity,
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage('https://picsum.photos/900/400?map'),
-                                  ),
-                                ),
-                                child: Container(
-                                  color: Colors.black.withValues(alpha: 0.25),
-                                  alignment: Alignment.center,
-                                  child: const Text('Google Maps Placeholder'),
+                                child: MapEmbed(
+                                  embedUrl:
+                                      'https://www.google.com/maps?q=3554+Chain+Bridge+Road+Suite+305+Fairfax+VA+22030&output=embed',
                                 ),
                               ),
                             ),
