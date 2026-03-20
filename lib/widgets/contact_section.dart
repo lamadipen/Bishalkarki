@@ -81,119 +81,193 @@ class _ContactSectionState extends State<ContactSection> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Flex(
-                direction: isMobile ? Axis.vertical : Axis.horizontal,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppSpacing.lg),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                controller: _name,
-                                decoration: const InputDecoration(labelText: 'Full Name'),
-                                validator: (v) => v == null || v.isEmpty ? 'Required' : null,
-                              ),
-                              const SizedBox(height: AppSpacing.md),
-                              TextFormField(
-                                controller: _email,
-                                decoration: const InputDecoration(labelText: 'Email'),
-                                validator: (v) => v == null || !v.contains('@') ? 'Enter valid email' : null,
-                              ),
-                              const SizedBox(height: AppSpacing.md),
-                              TextFormField(
-                                controller: _phone,
-                                decoration: const InputDecoration(labelText: 'Phone'),
-                              ),
-                              const SizedBox(height: AppSpacing.md),
-                              TextFormField(
-                                controller: _message,
-                                decoration: const InputDecoration(labelText: 'Message'),
-                                maxLines: 4,
-                              ),
-                              const SizedBox(height: AppSpacing.md),
-                              SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    if (_formKey.currentState?.validate() ?? false) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text('Message submitted successfully.')),
-                                      );
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.primary,
-                                    foregroundColor: Colors.black,
-                                  ),
-                                  child: const Text('Submit'),
-                                ),
-                              )
-                            ],
-                          ),
+              if (isMobile) ...[
+                _ContactFormCard(
+                  formKey: _formKey,
+                  name: _name,
+                  email: _email,
+                  phone: _phone,
+                  message: _message,
+                  stretchMessageField: false,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                _ContactInfoCard(launchLink: _launchLink),
+              ] else
+                IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: _ContactFormCard(
+                          formKey: _formKey,
+                          name: _name,
+                          email: _email,
+                          phone: _phone,
+                          message: _message,
+                          stretchMessageField: true,
                         ),
                       ),
-                    ),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: _ContactInfoCard(launchLink: _launchLink),
+                      ),
+                    ],
                   ),
-                  SizedBox(width: isMobile ? 0 : AppSpacing.md, height: isMobile ? AppSpacing.md : 0),
-                  Expanded(
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppSpacing.lg),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(AppContent.realtorName, style: Theme.of(context).textTheme.titleLarge),
-                            const SizedBox(height: AppSpacing.md),
-                            const Text('${AppContent.addressLine1}\n${AppContent.addressLine2}'),
-                            const SizedBox(height: AppSpacing.sm),
-                            _ContactItem(
-                              icon: FontAwesomeIcons.phone,
-                              label: 'Cell: ${AppContent.phoneCell}',
-                              onTap: () => _launchLink('tel:+17038692665'),
-                            ),
-                            _ContactItem(
-                              icon: FontAwesomeIcons.building,
-                              label: 'Office: ${AppContent.phoneOffice}',
-                              onTap: () => _launchLink('tel:+17036583999'),
-                            ),
-                            _ContactItem(
-                              icon: FontAwesomeIcons.envelope,
-                              label: AppContent.email,
-                              onTap: () => _launchLink('mailto:${AppContent.email}'),
-                            ),
-                            _ContactItem(
-                              icon: FontAwesomeIcons.globe,
-                              label: AppContent.website,
-                              onTap: () => _launchLink(AppContent.website),
-                            ),
-                            const SizedBox(height: AppSpacing.md),
-                            const Text(AppContent.workingHours),
-                            const SizedBox(height: AppSpacing.lg),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: const SizedBox(
-                                height: 260,
-                                width: double.infinity,
-                                child: MapEmbed(
-                                  embedUrl:
-                                      'https://www.google.com/maps?q=3554+Chain+Bridge+Road+Suite+305+Fairfax+VA+22030&output=embed',
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              )
+                ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ContactFormCard extends StatelessWidget {
+  const _ContactFormCard({
+    required this.formKey,
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.message,
+    required this.stretchMessageField,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController name;
+  final TextEditingController email;
+  final TextEditingController phone;
+  final TextEditingController message;
+  final bool stretchMessageField;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: stretchMessageField ? MainAxisSize.max : MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: name,
+                decoration: const InputDecoration(labelText: 'Full Name'),
+                validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              TextFormField(
+                controller: email,
+                decoration: const InputDecoration(labelText: 'Email'),
+                validator: (v) => v == null || !v.contains('@') ? 'Enter valid email' : null,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              TextFormField(
+                controller: phone,
+                decoration: const InputDecoration(labelText: 'Phone'),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              if (stretchMessageField)
+                Expanded(
+                  child: TextFormField(
+                    controller: message,
+                    decoration: const InputDecoration(
+                      labelText: 'Message',
+                      alignLabelWithHint: true,
+                    ),
+                    maxLines: null,
+                    expands: true,
+                    textAlignVertical: TextAlignVertical.top,
+                    keyboardType: TextInputType.multiline,
+                  ),
+                )
+              else
+                TextFormField(
+                  controller: message,
+                  decoration: const InputDecoration(labelText: 'Message'),
+                  maxLines: 4,
+                ),
+              const SizedBox(height: AppSpacing.md),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState?.validate() ?? false) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Message submitted successfully.')),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.black,
+                  ),
+                  child: const Text('Submit'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ContactInfoCard extends StatelessWidget {
+  const _ContactInfoCard({required this.launchLink});
+
+  final Future<void> Function(String value) launchLink;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(AppContent.realtorName, style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: AppSpacing.md),
+            const Text('${AppContent.addressLine1}\n${AppContent.addressLine2}'),
+            const SizedBox(height: AppSpacing.sm),
+            _ContactItem(
+              icon: FontAwesomeIcons.phone,
+              label: 'Cell: ${AppContent.phoneCell}',
+              onTap: () => launchLink('tel:+17038692665'),
+            ),
+            _ContactItem(
+              icon: FontAwesomeIcons.building,
+              label: 'Office: ${AppContent.phoneOffice}',
+              onTap: () => launchLink('tel:+17036583999'),
+            ),
+            _ContactItem(
+              icon: FontAwesomeIcons.envelope,
+              label: AppContent.email,
+              onTap: () => launchLink('mailto:${AppContent.email}'),
+            ),
+            _ContactItem(
+              icon: FontAwesomeIcons.globe,
+              label: AppContent.website,
+              onTap: () => launchLink(AppContent.website),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            const Text(AppContent.workingHours),
+            const SizedBox(height: AppSpacing.lg),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: const SizedBox(
+                height: 260,
+                width: double.infinity,
+                child: MapEmbed(
+                  embedUrl:
+                      'https://www.google.com/maps?q=3554+Chain+Bridge+Road+Suite+305+Fairfax+VA+22030&output=embed',
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
