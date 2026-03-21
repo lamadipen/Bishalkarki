@@ -14,16 +14,19 @@ class TestimonialsSection extends StatelessWidget {
 
     const testimonials = [
       _Testimonial(
-        'A. Rahman',
-        'Bishal was incredibly responsive and negotiated exactly what we needed. He made our purchase feel easy.',
+        'Ganesh Basnet',
+        'Highly recommend Bishal as a great realtor in DC metro area! Very responsive, knowledgeable, friendly - truly a pleasure to work with.',
+        imageUrl: null,
       ),
       _Testimonial(
-        'M. Peterson',
-        'Professional, strategic, and truly caring. From staging advice to closing, every detail was covered.',
+        'Bivek Dhakal',
+        'Thank you so much Bishal Karki for all of your help in the purchase of our dream house. Because of your knowledge, hard work and passion we now have a place to call our own. Happy home! Much appreciated!',
+        imageUrl: null,
       ),
       _Testimonial(
-        'J. Lewis',
-        'He understands this market deeply. We sold above asking and moved into our dream home right on schedule.',
+        'Riwaj Rimal',
+        'Bishal is outstanding. His professionalism, market knowledge, and commitment after closing sets him apart. Highly recommend for a fantastic real estate experience if you are in DMV area.',
+        imageUrl: null,
       ),
     ];
 
@@ -66,9 +69,10 @@ class TestimonialsSection extends StatelessWidget {
                         const Spacer(),
                         Row(
                           children: [
-                            const CircleAvatar(
+                            CircleAvatar(
                               radius: 20,
-                              backgroundImage: NetworkImage('https://picsum.photos/100'),
+                              backgroundImage: testimonials[index].imageUrl != null ? NetworkImage(testimonials[index].imageUrl!) : null,
+                              child: testimonials[index].imageUrl == null ? const Icon(Icons.person) : null,
                             ),
                             const SizedBox(width: AppSpacing.sm),
                             Text(testimonials[index].name),
@@ -88,7 +92,8 @@ class TestimonialsSection extends StatelessWidget {
 }
 
 class _Testimonial {
-  const _Testimonial(this.name, this.quote);
+  const _Testimonial(this.name, this.quote, {this.imageUrl});
   final String name;
   final String quote;
+  final String? imageUrl;
 }
