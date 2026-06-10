@@ -127,7 +127,7 @@ class HeroSection extends StatelessWidget {
                           backgroundColor: AppColors.primary,
                           foregroundColor: Colors.black,
                         ),
-                        child: const Text('Explore Listings'),
+                        child: const Text('View Live Listings'),
                       ),
                       OutlinedButton(
                         onPressed: () => keys.scrollToSection('contact'),

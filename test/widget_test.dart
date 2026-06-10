@@ -28,6 +28,6 @@ void main() {
 
     expect(
         find.text('Move with clarity.\nLive with confidence.'), findsOneWidget);
-    expect(find.text('Featured Listings'), findsOneWidget);
+    expect(find.text('Explore the live property portfolio.'), findsOneWidget);
   });
 }
