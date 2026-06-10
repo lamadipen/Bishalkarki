@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -103,7 +102,6 @@ class AboutSection extends StatelessWidget {
   }
 }
 
-/// Left column: light editorial panel — portrait + “MEET [NAME]” (reference layout).
 /// Circular-outline social icons (Ikon-style) for the About section.
 class _AboutSocialRow extends StatelessWidget {
   const _AboutSocialRow();
@@ -196,45 +194,86 @@ class _AboutLeftPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFFF0ECE3),
-        borderRadius: BorderRadius.circular(2),
+    return Padding(
+      padding: EdgeInsets.only(
+        right: isMobile ? 0 : AppSpacing.md,
+        bottom: isMobile ? 0 : AppSpacing.md,
       ),
-      padding: EdgeInsets.all(isMobile ? AppSpacing.lg : AppSpacing.xl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AspectRatio(
-            aspectRatio: 3 / 4,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(1),
-              child: Image.asset(
-                AppContent.aboutAgentPortraitAsset,
-                fit: BoxFit.cover,
-                alignment: Alignment.centerLeft,
-                filterQuality: FilterQuality.high,
-                errorBuilder: (_, __, ___) => Image.network(
-                  'https://picsum.photos/640/853?portrait',
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF0ECE3),
+          borderRadius: BorderRadius.zero,
+        ),
+        child: AspectRatio(
+          aspectRatio: isMobile ? 4 / 5 : 3 / 4,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.asset(
+                  AppContent.aboutAgentPortraitAsset,
                   fit: BoxFit.cover,
                   alignment: Alignment.center,
+                  filterQuality: FilterQuality.high,
+                  errorBuilder: (_, __, ___) => Container(
+                    color: AppColors.surface,
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      Icons.person_outline,
+                      color: AppColors.primary,
+                      size: 72,
+                    ),
+                  ),
                 ),
-              ),
+                const DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.transparent,
+                        Color(0xD9000000),
+                      ],
+                      stops: [0, 0.58, 1],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: AppSpacing.lg,
+                  right: AppSpacing.lg,
+                  bottom: AppSpacing.lg,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppContent.realtorName,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                              color: Colors.white,
+                              fontSize: isMobile ? 30 : 34,
+                            ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        '${AppContent.role.toUpperCase()}  •  ${AppContent.company.toUpperCase()}',
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              color: AppColors.primary,
+                              fontSize: 10,
+                              letterSpacing: 1.8,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-          SizedBox(height: isMobile ? AppSpacing.lg : AppSpacing.xl),
-          Text(
-            AppContent.aboutMeetHeadline,
-            style: GoogleFonts.montserrat(
-              fontSize: isMobile ? 27 : 38,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 3.2,
-              height: 1.05,
-              color: const Color(0xFF1A1A1A),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
