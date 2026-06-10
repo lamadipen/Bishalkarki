@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,15 +25,7 @@ class AboutSection extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(height: AppSpacing.xl),
-        const Wrap(
-          spacing: AppSpacing.md,
-          runSpacing: AppSpacing.md,
-          children: [
-            _StatCard(label: 'Closed Sales', value: '\$153.9M'),
-            _StatCard(label: 'Price Range', value: '\$375K - \$2.2M'),
-            _StatCard(label: 'Average Price', value: '\$601.1K'),
-          ],
-        ),
+        const _PerformanceBand(),
         const SizedBox(height: AppSpacing.xl),
         Text(
           'Recognition',
@@ -89,7 +79,7 @@ class AboutSection extends StatelessWidget {
                 const _AboutLeftPanel(isMobile: true),
                 const SizedBox(height: AppSpacing.xl),
                 _aboutRightColumn(context),
-              ] else
+              ] else ...[
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -104,6 +94,7 @@ class AboutSection extends StatelessWidget {
                     ),
                   ],
                 ),
+              ],
             ],
           ),
         ),
@@ -249,105 +240,139 @@ class _AboutLeftPanel extends StatelessWidget {
   }
 }
 
-class _CounterCard extends StatefulWidget {
-  const _CounterCard({required this.label, required this.value});
-  final String label;
-  final int value;
+class _PerformanceBand extends StatelessWidget {
+  const _PerformanceBand();
 
-  @override
-  State<_CounterCard> createState() => _CounterCardState();
-}
-
-class _CounterCardState extends State<_CounterCard> {
-  int _display = 0;
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _timer = Timer.periodic(const Duration(milliseconds: 18), (t) {
-      if (!mounted) return;
-      if (_display >= widget.value) {
-        _timer?.cancel();
-        return;
-      }
-      setState(() {
-        _display += widget.value < 50 ? 1 : 3;
-        if (_display > widget.value) _display = widget.value;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
+  static const _stats = [
+    _PerformanceStat(value: '278', label: 'Closed Sales'),
+    _PerformanceStat(value: '169.2M', label: 'Total Sales Volume'),
+    _PerformanceStat(value: '382.5K – 2.2M', label: 'Price Range'),
+    _PerformanceStat(value: '608.7K', label: 'Average Sale Price'),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 170,
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.divider),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '$_display+',
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: AppColors.primary,
-                ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final columns = constraints.maxWidth < 480 ? 1 : 4;
+
+        return Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: AppColors.divider),
           ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(widget.label),
-        ],
-      ),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: columns == 1 ? AppSpacing.md : AppSpacing.xs,
+                  vertical: AppSpacing.sm,
+                ),
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _stats.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: columns,
+                    mainAxisExtent: columns == 1 ? 112 : 116,
+                  ),
+                  itemBuilder: (context, index) {
+                    final isLastInRow = (index + 1) % columns == 0 ||
+                        index == _stats.length - 1;
+                    final hasRowBelow = index + columns < _stats.length;
+
+                    return Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          right: isLastInRow
+                              ? BorderSide.none
+                              : const BorderSide(color: AppColors.divider),
+                          bottom: hasRowBelow
+                              ? const BorderSide(color: AppColors.divider)
+                              : BorderSide.none,
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xs,
+                        vertical: AppSpacing.md,
+                      ),
+                      child: _StatItem(stat: _stats[index]),
+                    );
+                  },
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.lg,
+                  AppSpacing.md,
+                  AppSpacing.lg,
+                  AppSpacing.lg,
+                ),
+                decoration: const BoxDecoration(
+                  border: Border(top: BorderSide(color: AppColors.divider)),
+                ),
+                child: Text(
+                  'PERFORMANCE • PRIOR 5 YEARS',
+                  textAlign: TextAlign.right,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontSize: 11,
+                        letterSpacing: 1.8,
+                      ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
 
-class _StatCard extends StatelessWidget {
-  const _StatCard({required this.label, required this.value});
+class _StatItem extends StatelessWidget {
+  const _StatItem({required this.stat});
 
-  final String label;
+  final _PerformanceStat stat;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            stat.value,
+            maxLines: 1,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: AppColors.primary,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -0.5,
+                ),
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          stat.label,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: AppColors.textPrimary,
+                fontSize: 12,
+              ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PerformanceStat {
+  const _PerformanceStat({required this.value, required this.label});
+
   final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 170,
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.divider),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            value,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.w700,
-                ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-          ),
-        ],
-      ),
-    );
-  }
+  final String label;
 }
 
 class _RecognitionList extends StatelessWidget {
