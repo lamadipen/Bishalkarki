@@ -11,70 +11,112 @@ class HeroSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final keys = context.read<ScrollSectionController>();
+    final width = MediaQuery.sizeOf(context).width;
+    final isMobile = width < 600;
 
     return Container(
       key: keys.homeKey,
       width: double.infinity,
-      height: 760,
+      constraints: BoxConstraints(minHeight: isMobile ? 680 : 780),
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage('https://picsum.photos/1920/1200?grayscale'),
+          image: AssetImage(AppContent.heroAsset),
           fit: BoxFit.cover,
+          alignment: Alignment.center,
         ),
       ),
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
             colors: [
-              Colors.black.withValues(alpha: 0.52),
-              Colors.black.withValues(alpha: 0.78),
+              Colors.black.withValues(alpha: 0.88),
+              Colors.black.withValues(alpha: 0.58),
+              Colors.black.withValues(alpha: 0.28),
             ],
+            stops: const [0, 0.52, 1],
           ),
         ),
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
+            constraints:
+                const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${AppContent.realtorName} • ${AppContent.role}',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: AppColors.primary,
-                        ),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.28),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: AppColors.primary.withValues(alpha: 0.5),
+                      ),
+                    ),
+                    child: Text(
+                      'NORTHERN VIRGINIA  •  REAL ESTATE',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: AppColors.primary,
+                            fontSize: 11,
+                            letterSpacing: 1.8,
+                          ),
+                    ),
                   ),
-                  const SizedBox(height: AppSpacing.md),
-                  Text(
-                    'Guiding Buyers, Sellers,\nand Investors to\nConfident Decisions.',
-                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                          fontSize: MediaQuery.of(context).size.width < 600 ? 40 : 62,
-                        ),
+                  const SizedBox(height: AppSpacing.lg),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 760),
+                    child: Text(
+                      'Move with clarity.\nLive with confidence.',
+                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                            fontSize: isMobile ? 46 : 72,
+                            letterSpacing: -1.6,
+                          ),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 610),
+                    child: Text(
+                      'Strategic guidance for buyers, sellers, and investors across the DMV.',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color:
+                                AppColors.textPrimary.withValues(alpha: 0.86),
+                            fontSize: isMobile ? 17 : 20,
+                            height: 1.5,
+                          ),
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.md),
                   SizedBox(
-                    height: 40,
+                    height: 30,
                     child: AnimatedTextKit(
                       repeatForever: true,
                       animatedTexts: [
                         FadeAnimatedText(
                           AppContent.tagline,
-                          textStyle: Theme.of(context).textTheme.titleLarge,
-                          duration: const Duration(milliseconds: 1800),
+                          textStyle:
+                              Theme.of(context).textTheme.labelLarge?.copyWith(
+                                    color: AppColors.primary,
+                                  ),
+                          duration: const Duration(milliseconds: 2200),
                         ),
                         FadeAnimatedText(
-                          'From consultation to closing, every step covered',
-                          textStyle: Theme.of(context).textTheme.titleLarge,
-                          duration: const Duration(milliseconds: 1800),
+                          'Local expertise. Personal attention.',
+                          textStyle:
+                              Theme.of(context).textTheme.labelLarge?.copyWith(
+                                    color: AppColors.primary,
+                                  ),
+                          duration: const Duration(milliseconds: 2200),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xl),
+                  const SizedBox(height: 36),
                   Wrap(
                     spacing: AppSpacing.md,
                     runSpacing: AppSpacing.md,
@@ -84,23 +126,16 @@ class HeroSection extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           foregroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.xl,
-                            vertical: AppSpacing.md,
-                          ),
                         ),
-                        child: const Text('Home Search'),
+                        child: const Text('Explore Listings'),
                       ),
                       OutlinedButton(
                         onPressed: () => keys.scrollToSection('contact'),
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: AppColors.primary),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.xl,
-                            vertical: AppSpacing.md,
-                          ),
+                          foregroundColor: AppColors.textPrimary,
                         ),
-                        child: const Text('Contact Me'),
+                        child: const Text('Start a Conversation'),
                       ),
                     ],
                   ),

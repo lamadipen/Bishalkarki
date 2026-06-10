@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color background = Color(0xFF090909);
-  static const Color surface = Color(0xFF121212);
-  static const Color card = Color(0xFF1A1A1A);
-  static const Color primary = Color(0xFFC59D5F);
-  static const Color primaryDark = Color(0xFF9D7B48);
-  static const Color textPrimary = Color(0xFFF4F4F4);
-  static const Color textSecondary = Color(0xFFCFCFCF);
-  static const Color divider = Color(0xFF2D2D2D);
+  static const Color background = Color(0xFF0A0B0B);
+  static const Color surface = Color(0xFF111313);
+  static const Color card = Color(0xFF171A19);
+  static const Color primary = Color(0xFFD2AD72);
+  static const Color primaryDark = Color(0xFFA6804C);
+  static const Color textPrimary = Color(0xFFF4F1EA);
+  static const Color textSecondary = Color(0xFFB8B9B5);
+  static const Color divider = Color(0xFF2B2E2D);
 }
 
 class AppSpacing {
@@ -18,12 +18,14 @@ class AppSpacing {
   static const double lg = 24;
   static const double xl = 32;
   static const double xxl = 48;
-  static const double section = 90;
+  static const double section = 104;
   static const double maxContentWidth = 1200;
 }
 
 class AppContent {
   static const String realtorName = 'Bishal Karki';
+  static const String heroAsset = 'assets/images/hero_luxury_home.png';
+
   /// Portrait for About section (replace with a vertical headshot for best results).
   static const String aboutAgentPortraitAsset = 'assets/images/about_agent.jpg';
 
@@ -33,6 +35,7 @@ class AppContent {
     final first = parts.isEmpty ? realtorName : parts.first;
     return 'MEET ${first.toUpperCase()}';
   }
+
   static const String role = 'Realtor';
   static const String company = 'IKON Realty';
   static const String tagline = 'Top 1% Realtor in USA';

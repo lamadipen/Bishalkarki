@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../constants.dart';
 import '../main.dart';
+import 'section_heading.dart';
 
 class ServicesSection extends StatelessWidget {
   const ServicesSection({super.key});
@@ -31,20 +32,22 @@ class ServicesSection extends StatelessWidget {
 
     return Container(
       key: keys.servicesKey,
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.section),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg, vertical: AppSpacing.section),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
+          constraints:
+              const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
           child: Column(
             children: [
-              Text('Services', style: Theme.of(context).textTheme.displayMedium),
-              const SizedBox(height: AppSpacing.md),
-              Text(
-                'From consultation to closing, we are with you every step.',
-                style: Theme.of(context).textTheme.bodyLarge,
-                textAlign: TextAlign.center,
+              const SectionHeading(
+                eyebrow: 'How I can help',
+                title: 'Real estate, thoughtfully handled.',
+                description:
+                    'Focused expertise for every stage of your move, tailored to your goals and timeline.',
+                centered: true,
               ),
-              const SizedBox(height: AppSpacing.xl),
+              const SizedBox(height: AppSpacing.xxl),
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -53,7 +56,7 @@ class ServicesSection extends StatelessWidget {
                   crossAxisCount: columns,
                   crossAxisSpacing: AppSpacing.md,
                   mainAxisSpacing: AppSpacing.md,
-                  childAspectRatio: width < 600 ? 1.3 : 1.2,
+                  mainAxisExtent: width < 600 ? 270 : 285,
                 ),
                 itemBuilder: (_, i) => Card(
                   child: Padding(
@@ -61,11 +64,26 @@ class ServicesSection extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        FaIcon(services[i].icon, color: AppColors.primary, size: 24),
+                        Container(
+                          width: 46,
+                          height: 46,
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          alignment: Alignment.center,
+                          child: FaIcon(
+                            services[i].icon,
+                            color: AppColors.primary,
+                            size: 20,
+                          ),
+                        ),
                         const SizedBox(height: AppSpacing.md),
-                        Text(services[i].title, style: Theme.of(context).textTheme.titleLarge),
+                        Text(services[i].title,
+                            style: Theme.of(context).textTheme.titleLarge),
                         const SizedBox(height: AppSpacing.sm),
-                        Text(services[i].description, style: Theme.of(context).textTheme.bodyMedium),
+                        Text(services[i].description,
+                            style: Theme.of(context).textTheme.bodyMedium),
                       ],
                     ),
                   ),

@@ -5,14 +5,20 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'dart:ui' show Size;
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 
 import 'package:bishal_karki_realtor_web/main.dart';
 
 void main() {
   testWidgets('Realtor web page builds', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1440, 1800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
     await tester.pumpWidget(
       ChangeNotifierProvider(
         create: (_) => ScrollSectionController(),
@@ -20,7 +26,8 @@ void main() {
       ),
     );
 
-    // Basic sanity check: the page should render the About header.
-    expect(find.text('About'), findsOneWidget);
+    expect(
+        find.text('Move with clarity.\nLive with confidence.'), findsOneWidget);
+    expect(find.text('Featured Listings'), findsOneWidget);
   });
 }

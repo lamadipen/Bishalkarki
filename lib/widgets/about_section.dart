@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';
 import '../main.dart';
+import 'section_heading.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
@@ -72,12 +73,18 @@ class AboutSection extends StatelessWidget {
       ),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
+          constraints:
+              const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('About', style: Theme.of(context).textTheme.displayMedium),
-              const SizedBox(height: AppSpacing.xl),
+              const SectionHeading(
+                eyebrow: 'Meet your advisor',
+                title: 'Experience that moves you forward.',
+                description:
+                    'Personal representation, informed strategy, and steady guidance from the first conversation to closing.',
+              ),
+              const SizedBox(height: AppSpacing.xxl),
               if (isMobile) ...[
                 const _AboutLeftPanel(isMobile: true),
                 const SizedBox(height: AppSpacing.xl),
@@ -120,10 +127,26 @@ class _AboutSocialRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = <({IconData icon, String url, String tooltip})>[
-      (icon: FontAwesomeIcons.facebookF, url: AppContent.facebook, tooltip: 'Facebook'),
-      (icon: FontAwesomeIcons.instagram, url: AppContent.instagram, tooltip: 'Instagram'),
-      (icon: FontAwesomeIcons.linkedinIn, url: AppContent.linkedIn, tooltip: 'LinkedIn'),
-      (icon: FontAwesomeIcons.whatsapp, url: AppContent.whatsapp, tooltip: 'WhatsApp'),
+      (
+        icon: FontAwesomeIcons.facebookF,
+        url: AppContent.facebook,
+        tooltip: 'Facebook'
+      ),
+      (
+        icon: FontAwesomeIcons.instagram,
+        url: AppContent.instagram,
+        tooltip: 'Instagram'
+      ),
+      (
+        icon: FontAwesomeIcons.linkedinIn,
+        url: AppContent.linkedIn,
+        tooltip: 'LinkedIn'
+      ),
+      (
+        icon: FontAwesomeIcons.whatsapp,
+        url: AppContent.whatsapp,
+        tooltip: 'WhatsApp'
+      ),
     ];
 
     return Wrap(
@@ -164,7 +187,8 @@ class _SocialCircleButton extends StatelessWidget {
           height: 46,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: AppColors.primary.withValues(alpha: 0.85), width: 1.4),
+            border: Border.all(
+                color: AppColors.primary.withValues(alpha: 0.85), width: 1.4),
           ),
           alignment: Alignment.center,
           child: FaIcon(icon, size: 18, color: AppColors.primary),
@@ -183,7 +207,10 @@ class _AboutLeftPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: const Color(0xFFF0ECE3),
+        borderRadius: BorderRadius.circular(2),
+      ),
       padding: EdgeInsets.all(isMobile ? AppSpacing.lg : AppSpacing.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -191,7 +218,7 @@ class _AboutLeftPanel extends StatelessWidget {
           AspectRatio(
             aspectRatio: 3 / 4,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.circular(1),
               child: Image.asset(
                 AppContent.aboutAgentPortraitAsset,
                 fit: BoxFit.cover,
@@ -209,7 +236,7 @@ class _AboutLeftPanel extends StatelessWidget {
           Text(
             AppContent.aboutMeetHeadline,
             style: GoogleFonts.montserrat(
-              fontSize: isMobile ? 28 : 40,
+              fontSize: isMobile ? 27 : 38,
               fontWeight: FontWeight.w500,
               letterSpacing: 3.2,
               height: 1.05,

@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';
 import '../main.dart';
+import 'section_heading.dart';
 
 /// Opens listing or portfolio URL in the browser (Homes.com, etc.).
 Future<void> launchListingUrl(String url) async {
@@ -98,11 +99,18 @@ class ListingsSection extends StatelessWidget {
       color: AppColors.surface,
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
+          constraints:
+              const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
           child: Column(
             children: [
-              Text('Featured Listings', style: Theme.of(context).textTheme.displayMedium),
-              const SizedBox(height: AppSpacing.xl),
+              const SectionHeading(
+                eyebrow: 'Curated opportunities',
+                title: 'Featured Listings',
+                description:
+                    'A selection of standout homes across Northern Virginia and the greater DMV.',
+                centered: true,
+              ),
+              const SizedBox(height: AppSpacing.xxl),
               AnimationLimiter(
                 child: GridView.builder(
                   shrinkWrap: true,
@@ -112,7 +120,7 @@ class ListingsSection extends StatelessWidget {
                     crossAxisCount: columns,
                     crossAxisSpacing: AppSpacing.md,
                     mainAxisSpacing: AppSpacing.md,
-                    childAspectRatio: 0.9,
+                    mainAxisExtent: width < 600 ? 420 : 410,
                   ),
                   itemBuilder: (context, index) {
                     return AnimationConfiguration.staggeredGrid(
@@ -121,7 +129,8 @@ class ListingsSection extends StatelessWidget {
                       duration: const Duration(milliseconds: 450),
                       child: SlideAnimation(
                         verticalOffset: 20,
-                        child: FadeInAnimation(child: _ListingCard(data: _listings[index])),
+                        child: FadeInAnimation(
+                            child: _ListingCard(data: _listings[index])),
                       ),
                     );
                   },
@@ -129,12 +138,13 @@ class ListingsSection extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.xl),
               ElevatedButton(
-                onPressed: () => launchListingUrl(AppContent.homesAgentListingsUrl),
+                onPressed: () =>
+                    launchListingUrl(AppContent.homesAgentListingsUrl),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.black,
                 ),
-                child: const Text('View All Listings'),
+                child: const Text('Browse All Listings'),
               ),
             ],
           ),
@@ -172,7 +182,7 @@ class _ListingCardState extends State<_ListingCard> {
           ),
           decoration: BoxDecoration(
             color: AppColors.card,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(color: AppColors.divider),
             boxShadow: hovering
                 ? [
@@ -185,11 +195,12 @@ class _ListingCardState extends State<_ListingCard> {
                 : null,
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
+                SizedBox(
+                  height: 220,
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
@@ -200,27 +211,27 @@ class _ListingCardState extends State<_ListingCard> {
                         errorBuilder: (_, __, ___) => Container(
                           color: AppColors.surface,
                           alignment: Alignment.center,
-                          child: Icon(Icons.home_work_outlined, color: AppColors.textSecondary),
+                          child: Icon(Icons.home_work_outlined,
+                              color: AppColors.textSecondary),
                         ),
                       ),
                       Positioned(
-                        right: AppSpacing.sm,
+                        left: AppSpacing.sm,
                         top: AppSpacing.sm,
                         child: Material(
-                          color: Colors.black54,
-                          borderRadius: BorderRadius.circular(8),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.open_in_new, size: 14, color: Colors.white),
-                                SizedBox(width: 4),
-                                Text(
-                                  'View',
-                                  style: TextStyle(color: Colors.white, fontSize: 12),
-                                ),
-                              ],
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(999),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 11, vertical: 6),
+                            child: Text(
+                              widget.data.status.toUpperCase(),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 0.8,
+                              ),
                             ),
                           ),
                         ),
@@ -233,45 +244,30 @@ class _ListingCardState extends State<_ListingCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.18),
-                          borderRadius: BorderRadius.circular(999),
-                          border: Border.all(color: AppColors.primary.withValues(alpha: 0.35)),
-                        ),
-                        child: Text(
-                          widget.data.status,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
                       Text(
                         widget.data.price,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge
-                            ?.copyWith(color: AppColors.primary),
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: AppColors.textPrimary, fontSize: 22),
                       ),
                       const SizedBox(height: 6),
                       Text(widget.data.address),
                       const SizedBox(height: AppSpacing.md),
-                      Row(
+                      Wrap(
+                        spacing: AppSpacing.md,
+                        runSpacing: AppSpacing.xs,
                         children: [
-                          const Icon(Icons.king_bed_outlined, size: 18),
-                          const SizedBox(width: 4),
-                          Text(widget.data.beds),
-                          const SizedBox(width: 12),
-                          const Icon(Icons.bathtub_outlined, size: 18),
-                          const SizedBox(width: 4),
-                          Text(widget.data.baths),
-                          const SizedBox(width: 12),
-                          const Icon(Icons.square_foot, size: 18),
-                          const SizedBox(width: 4),
-                          Text('${widget.data.sqft} sqft'),
+                          _PropertyDetail(
+                            icon: Icons.king_bed_outlined,
+                            label: '${widget.data.beds} beds',
+                          ),
+                          _PropertyDetail(
+                            icon: Icons.bathtub_outlined,
+                            label: '${widget.data.baths} baths',
+                          ),
+                          _PropertyDetail(
+                            icon: Icons.square_foot,
+                            label: '${widget.data.sqft} sqft',
+                          ),
                         ],
                       ),
                     ],
@@ -282,6 +278,25 @@ class _ListingCardState extends State<_ListingCard> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _PropertyDetail extends StatelessWidget {
+  const _PropertyDetail({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 17, color: AppColors.primary),
+        const SizedBox(width: 5),
+        Text(label, style: Theme.of(context).textTheme.bodyMedium),
+      ],
     );
   }
 }
@@ -304,8 +319,10 @@ class _Listing {
   final String baths;
   final String sqft;
   final String status;
+
   /// Listing hero/thumbnail image (paste Homes.com image URL or host your own).
   final String thumbnailUrl;
+
   /// Full URL opened when the card is tapped (property detail or agent page).
   final String listingUrl;
 }

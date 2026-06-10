@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../constants.dart';
 import '../main.dart';
 import 'map_embed.dart';
+import 'section_heading.dart';
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -44,42 +45,95 @@ class _ContactSectionState extends State<ContactSection> {
 
     return Container(
       key: keys.contactKey,
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.section),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg, vertical: AppSpacing.section),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
+          constraints:
+              const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Contact', style: Theme.of(context).textTheme.displayMedium),
-              const SizedBox(height: AppSpacing.xl),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: Wrap(
-                    runSpacing: AppSpacing.sm,
-                    spacing: AppSpacing.lg,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Text(
-                        'Get your instant home valuation',
-                        style: Theme.of(context).textTheme.titleLarge,
+              const SectionHeading(
+                eyebrow: 'Let’s connect',
+                title: 'Your next move starts here.',
+                description:
+                    'Tell me what you are planning. I’ll follow up with clear next steps and local insight.',
+              ),
+              const SizedBox(height: AppSpacing.xxl),
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.primary.withValues(alpha: 0.16),
+                      AppColors.card,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.32),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.primary.withValues(alpha: 0.14),
                       ),
-                      Text(
-                        'See what your home may be worth in today\'s DMV market.',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      child: const Icon(
+                        Icons.home_work_outlined,
+                        color: AppColors.primary,
                       ),
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Curious what your home is worth?',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Get a complimentary market valuation for your DMV property.',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (!isMobile) ...[
+                      const SizedBox(width: AppSpacing.lg),
                       OutlinedButton(
                         onPressed: () => _launchLink(AppContent.website),
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: AppColors.primary),
+                          foregroundColor: AppColors.textPrimary,
                         ),
-                        child: const Text('Unlock Free Valuation'),
+                        child: const Text('Request Valuation'),
                       ),
                     ],
-                  ),
+                  ],
                 ),
               ),
+              if (isMobile) ...[
+                const SizedBox(height: AppSpacing.md),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: () => _launchLink(AppContent.website),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: AppColors.primary),
+                      foregroundColor: AppColors.textPrimary,
+                    ),
+                    child: const Text('Request Valuation'),
+                  ),
+                ),
+              ],
               const SizedBox(height: AppSpacing.lg),
               if (isMobile) ...[
                 _ContactFormCard(
@@ -149,8 +203,14 @@ class _ContactFormCard extends StatelessWidget {
           key: formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: stretchMessageField ? MainAxisSize.max : MainAxisSize.min,
+            mainAxisSize:
+                stretchMessageField ? MainAxisSize.max : MainAxisSize.min,
             children: [
+              Text(
+                'Send a message',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: AppSpacing.lg),
               TextFormField(
                 controller: name,
                 decoration: const InputDecoration(labelText: 'Full Name'),
@@ -160,7 +220,8 @@ class _ContactFormCard extends StatelessWidget {
               TextFormField(
                 controller: email,
                 decoration: const InputDecoration(labelText: 'Email'),
-                validator: (v) => v == null || !v.contains('@') ? 'Enter valid email' : null,
+                validator: (v) =>
+                    v == null || !v.contains('@') ? 'Enter valid email' : null,
               ),
               const SizedBox(height: AppSpacing.md),
               TextFormField(
@@ -195,7 +256,8 @@ class _ContactFormCard extends StatelessWidget {
                   onPressed: () {
                     if (formKey.currentState?.validate() ?? false) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Message submitted successfully.')),
+                        const SnackBar(
+                            content: Text('Message submitted successfully.')),
                       );
                     }
                   },
@@ -203,7 +265,7 @@ class _ContactFormCard extends StatelessWidget {
                     backgroundColor: AppColors.primary,
                     foregroundColor: Colors.black,
                   ),
-                  child: const Text('Submit'),
+                  child: const Text('Send Message'),
                 ),
               ),
             ],
@@ -229,9 +291,20 @@ class _ContactInfoCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(AppContent.realtorName, style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              'Contact details',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              '${AppContent.realtorName} • ${AppContent.company}',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.primary,
+                  ),
+            ),
             const SizedBox(height: AppSpacing.md),
-            const Text('${AppContent.addressLine1}\n${AppContent.addressLine2}'),
+            const Text(
+                '${AppContent.addressLine1}\n${AppContent.addressLine2}'),
             const SizedBox(height: AppSpacing.sm),
             _ContactItem(
               icon: FontAwesomeIcons.phone,

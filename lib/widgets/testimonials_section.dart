@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../constants.dart';
 import '../main.dart';
+import 'section_heading.dart';
 
 class TestimonialsSection extends StatelessWidget {
   const TestimonialsSection({super.key});
@@ -32,22 +33,33 @@ class TestimonialsSection extends StatelessWidget {
 
     return Container(
       key: keys.testimonialsKey,
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.section),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg, vertical: AppSpacing.section),
       color: AppColors.surface,
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
+          constraints:
+              const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
           child: Column(
             children: [
-              Text('Testimonials', style: Theme.of(context).textTheme.displayMedium),
-              const SizedBox(height: AppSpacing.xl),
+              const SectionHeading(
+                eyebrow: 'Client stories',
+                title: 'Trusted beyond the closing table.',
+                description:
+                    'Straight from clients who trusted Bishal with one of life’s biggest decisions.',
+                centered: true,
+              ),
+              const SizedBox(height: AppSpacing.xxl),
               CarouselSlider.builder(
                 itemCount: testimonials.length,
                 options: CarouselOptions(
-                  height: 280,
+                  height: MediaQuery.sizeOf(context).width < 700 ? 410 : 380,
                   autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 6),
                   enlargeCenterPage: true,
-                  viewportFraction: MediaQuery.of(context).size.width < 700 ? 0.96 : 0.52,
+                  enlargeFactor: 0.12,
+                  viewportFraction:
+                      MediaQuery.sizeOf(context).width < 700 ? 0.94 : 0.58,
                 ),
                 itemBuilder: (_, index, __) => Card(
                   child: Padding(
@@ -55,27 +67,71 @@ class TestimonialsSection extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: List.generate(
-                            5,
-                            (_) => const Icon(Icons.star, color: AppColors.primary, size: 20),
-                          ),
+                        const Icon(
+                          Icons.format_quote_rounded,
+                          color: AppColors.primary,
+                          size: 36,
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        const SizedBox(height: AppSpacing.sm),
                         Text(
-                          '"${testimonials[index].quote}"',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          testimonials[index].quote,
+                          maxLines: 7,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: AppColors.textPrimary,
+                                    fontSize: 17,
+                                  ),
                         ),
                         const Spacer(),
                         Row(
                           children: [
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundImage: testimonials[index].imageUrl != null ? NetworkImage(testimonials[index].imageUrl!) : null,
-                              child: testimonials[index].imageUrl == null ? const Icon(Icons.person) : null,
+                            Container(
+                              width: 38,
+                              height: 38,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color:
+                                    AppColors.primary.withValues(alpha: 0.12),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                testimonials[index].name.substring(0, 1),
+                                style: const TextStyle(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
                             ),
                             const SizedBox(width: AppSpacing.sm),
-                            Text(testimonials[index].name),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  testimonials[index].name,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                const Text(
+                                  'Verified client',
+                                  style: TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            Row(
+                              children: List.generate(
+                                5,
+                                (_) => const Icon(
+                                  Icons.star_rounded,
+                                  color: AppColors.primary,
+                                  size: 17,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ],

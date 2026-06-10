@@ -13,6 +13,7 @@ ThemeData buildAppTheme() {
     displayMedium: GoogleFonts.playfairDisplay(
       color: AppColors.textPrimary,
       fontWeight: FontWeight.w700,
+      height: 1.12,
     ),
     headlineMedium: GoogleFonts.playfairDisplay(
       color: AppColors.textPrimary,
@@ -33,7 +34,7 @@ ThemeData buildAppTheme() {
     labelLarge: GoogleFonts.inter(
       color: AppColors.textPrimary,
       fontWeight: FontWeight.w600,
-      letterSpacing: 0.3,
+      letterSpacing: 0.5,
     ),
   );
 
@@ -53,7 +54,7 @@ ThemeData buildAppTheme() {
       color: AppColors.card,
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
         side: BorderSide(color: AppColors.divider),
       ),
     ),
@@ -71,6 +72,22 @@ ThemeData buildAppTheme() {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: AppColors.primary),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(0, 52),
+        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        textStyle: GoogleFonts.inter(fontWeight: FontWeight.w700),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        minimumSize: const Size(0, 52),
+        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        textStyle: GoogleFonts.inter(fontWeight: FontWeight.w700),
       ),
     ),
   );
