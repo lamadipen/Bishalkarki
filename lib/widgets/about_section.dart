@@ -256,75 +256,69 @@ class _PerformanceBand extends StatelessWidget {
       builder: (context, constraints) {
         final columns = constraints.maxWidth < 480 ? 1 : 4;
 
-        return Container(
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.divider),
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: columns == 1 ? AppSpacing.md : AppSpacing.xs,
-                  vertical: AppSpacing.sm,
-                ),
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _stats.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: columns,
-                    mainAxisExtent: columns == 1 ? 112 : 116,
-                  ),
-                  itemBuilder: (context, index) {
-                    final isLastInRow = (index + 1) % columns == 0 ||
-                        index == _stats.length - 1;
-                    final hasRowBelow = index + columns < _stats.length;
-
-                    return Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          right: isLastInRow
-                              ? BorderSide.none
-                              : const BorderSide(color: AppColors.divider),
-                          bottom: hasRowBelow
-                              ? const BorderSide(color: AppColors.divider)
-                              : BorderSide.none,
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.xs,
-                        vertical: AppSpacing.md,
-                      ),
-                      child: _StatItem(stat: _stats[index]),
-                    );
-                  },
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.lg,
-                  AppSpacing.md,
-                  AppSpacing.lg,
-                  AppSpacing.lg,
-                ),
-                decoration: const BoxDecoration(
-                  border: Border(top: BorderSide(color: AppColors.divider)),
-                ),
-                child: Text(
-                  'PERFORMANCE • PRIOR 5 YEARS',
-                  textAlign: TextAlign.right,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  'PERFORMANCE',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.primary,
                         fontSize: 11,
                         letterSpacing: 1.8,
                       ),
                 ),
+                const SizedBox(width: AppSpacing.sm),
+                const Expanded(child: Divider(color: AppColors.divider)),
+                const SizedBox(width: AppSpacing.sm),
+                Text(
+                  'PRIOR 5 YEARS',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontSize: 10,
+                        letterSpacing: 1.5,
+                      ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: _stats.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: columns,
+                mainAxisExtent: columns == 1 ? 102 : 108,
               ),
-            ],
-          ),
+              itemBuilder: (context, index) {
+                final isLastInRow =
+                    (index + 1) % columns == 0 || index == _stats.length - 1;
+                final hasRowBelow = index + columns < _stats.length;
+
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      right: isLastInRow
+                          ? BorderSide.none
+                          : const BorderSide(color: AppColors.divider),
+                      bottom: hasRowBelow
+                          ? const BorderSide(color: AppColors.divider)
+                          : BorderSide.none,
+                    ),
+                  ),
+                  padding: EdgeInsets.only(
+                    left: index % columns == 0 ? 0 : AppSpacing.sm,
+                    right: isLastInRow ? 0 : AppSpacing.sm,
+                    top: AppSpacing.sm,
+                    bottom: AppSpacing.sm,
+                  ),
+                  child: _StatItem(stat: _stats[index]),
+                );
+              },
+            ),
+            const Divider(color: AppColors.divider),
+          ],
         );
       },
     );
@@ -340,6 +334,7 @@ class _StatItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FittedBox(
           fit: BoxFit.scaleDown,
@@ -357,7 +352,7 @@ class _StatItem extends StatelessWidget {
         const SizedBox(height: AppSpacing.xs),
         Text(
           stat.label,
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.start,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: AppColors.textPrimary,
                 fontSize: 12,
